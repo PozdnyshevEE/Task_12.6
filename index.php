@@ -1,10 +1,9 @@
 <?php
     include 'example_persons.php';
 
-    function getPartsFromFullname($array) {
+    function getPartsFromFullname($str) {
 
             $key = ['surname', 'name', 'patronomyc'];
-            $str = $array['fullname'];
             
             $new_array = explode(' ', $str);
             $result = array_combine($key, $new_array);
@@ -18,7 +17,14 @@
         return $result;
     }
 
-    $array = getPartsFromFullname($example_persons_array[8]);
-    print_r(getFullnameFromParts($array['surname'], $array['name'], $array['patronomyc']));
+    function getShortName($str) {
+            $array = getPartsFromFullname($str);
+            $temp_surname = mb_substr($array['surname'], 0, 1);
+            $result = $array['name'] . ' ' . $temp_surname . '.';
+            return $result;
+     }
+
+    $array = getPartsFromFullname($example_persons_array[2]['fullname']);
+    print_r(getShortName($example_persons_array[2]['fullname']));
     
 ?>
