@@ -93,5 +93,29 @@
         print_r("Не удалось определить - $indeterminateGender_percent%");
     }
 
-    print_r(getGenderDescription($example_persons_array));
+    function getPerfectPartner($surname, $name, $patronomyc, $array) {
+        mb_convert_case($surname, MB_CASE_TITLE_SIMPLE);
+        mb_convert_case($name, MB_CASE_TITLE_SIMPLE);
+        mb_convert_case($patronomyc, MB_CASE_TITLE_SIMPLE);
+        $fullname = getFullnameFromParts($surname, $name, $patronomyc);
+        $gender = getGenderFromName($fullname);
+        $count = count($array);
+        do {
+            $random = rand(0, $count);
+            $ranFullName = $array[$random]['fullname'];
+            $genderFullName = getGenderFromName($ranFullName);
+            do {
+                $random = rand(0, $count);
+                $ranFullName = $array[$random]['fullname'];
+            } while ($genderFullName === 0);
+        } while ($gender === $genderFullName);
+        $shortName = getShortName($fullname);
+        $ranShortName = getShortName($ranFullName);
+        $ran_percent = rand(50, 100) / 100;
+
+        print_r("$shortName + $ranShortName =<br/>");
+        print_r("Идеально на $ran_percent%");
+    }
+
+    print_r(getPerfectPartner('Иванов', 'Иван', 'Иванович', $example_persons_array));
 ?>
