@@ -59,6 +59,39 @@
         return $totalSexAttribute;
     }
 
-    print_r(getGenderFromName($example_persons_array[1]['fullname']));
-    
+    function getGenderDescription($array) {
+
+        $count = count($array);
+        $men = 0;
+        $women = 0;
+        $indeterminateGender = 0;
+        
+        for($i = 0; $i < $count; $i++) {
+            foreach ($array[$i] as $key => $value) {
+                if($key === 'fullname') {
+                    $temp = getGenderFromName($value);
+                    if ($temp === 1) {
+                        $men += 1;
+                    }
+                    else if ($temp === -1) {
+                        $women += 1;
+                    }
+                    else if ($temp === 0) {
+                        $indeterminateGender += 1;
+                    }
+                }
+            }
+            $men_percent = round((($men * 100) / $count), 2);
+            $women_percent = round((($women * 100) / $count), 2);
+            $indeterminateGender_percent = round((($indeterminateGender * 100) / $count), 2);
+        }
+
+        print_r("Гендерный состав аудитории :<br/>");
+        print_r("---------------------------------------<br/>");
+        print_r("Мужчины - $men_percent%<br/>");
+        print_r("Женщины - $women_percent%<br/>");
+        print_r("Не удалось определить - $indeterminateGender_percent%");
+    }
+
+    print_r(getGenderDescription($example_persons_array));
 ?>
