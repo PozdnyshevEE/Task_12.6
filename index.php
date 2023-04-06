@@ -53,7 +53,6 @@
         else if ((mb_substr($surname, -1)) === 'в') {
             $totalSexAttribute += 1;
         }
-
         $totalSexAttribute = ($totalSexAttribute <=> 0);
 
         return $totalSexAttribute;
@@ -87,35 +86,38 @@
         }
 
         print_r("Гендерный состав аудитории :<br/>");
-        print_r("---------------------------------------<br/>");
+        print_r("------------------------------------------------<br/>");
         print_r("Мужчины - $men_percent%<br/>");
         print_r("Женщины - $women_percent%<br/>");
-        print_r("Не удалось определить - $indeterminateGender_percent%");
+        print_r("Не удалось определить - $indeterminateGender_percent%<br/>");
     }
 
     function getPerfectPartner($surname, $name, $patronomyc, $array) {
-        mb_convert_case($surname, MB_CASE_TITLE_SIMPLE);
-        mb_convert_case($name, MB_CASE_TITLE_SIMPLE);
-        mb_convert_case($patronomyc, MB_CASE_TITLE_SIMPLE);
-        $fullname = getFullnameFromParts($surname, $name, $patronomyc);
-        $gender = getGenderFromName($fullname);
+        $surname = mb_convert_case($surname, MB_CASE_TITLE_SIMPLE);
+        $name = mb_convert_case($name, MB_CASE_TITLE_SIMPLE);
+        $patronomyc = mb_convert_case($patronomyc, MB_CASE_TITLE_SIMPLE);
+        $inputFullName = getFullnameFromParts($surname, $name, $patronomyc);
+        $genderInputFullName = getGenderFromName($inputFullName);
         $count = count($array);
         do {
-            $random = rand(0, $count);
-            $ranFullName = $array[$random]['fullname'];
-            $genderFullName = getGenderFromName($ranFullName);
-            do {
-                $random = rand(0, $count);
-                $ranFullName = $array[$random]['fullname'];
-            } while ($genderFullName === 0);
-        } while ($gender === $genderFullName);
-        $shortName = getShortName($fullname);
-        $ranShortName = getShortName($ranFullName);
-        $ran_percent = rand(50, 100) / 100;
+            $randomIndex = rand(0, $count - 1);
+            $randomFullName = $array[$randomIndex]['fullname'];
+            $genderRandomFullName = getGenderFromName($randomFullName);
+            while ($genderRandomFullName === 0) {
+                $randomIndex = rand(0, $count - 1);
+                $randomFullName = $array[$randomIndex]['fullname'];
+                $genderRandomFullName = getGenderFromName($randomFullName);
+            }
+        } while ($genderInputFullName === $genderRandomFullName);
+        $shortName = getShortName($inputFullName);
+        $ranShortName = getShortName($randomFullName);
+        $random_percent = round((rand(5000, 10000) / 100), 2);
 
         print_r("$shortName + $ranShortName =<br/>");
-        print_r("Идеально на $ran_percent%");
+        print_r("&#9825; Идеально на $random_percent% &#9825;"); 
     }
 
-    print_r(getPerfectPartner('Иванов', 'Иван', 'Иванович', $example_persons_array));
+    print_r(getGenderDescription($example_persons_array));
+    print_r("------------------------------------------------<br/>");
+    print_r(getPerfectPartner('ИВАНОВ', 'иван', 'ИвАнОВиЧ', $example_persons_array));
 ?>
