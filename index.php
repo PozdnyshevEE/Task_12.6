@@ -38,19 +38,19 @@
         if ((mb_substr($patronomyc, -3)) === 'вна') {
             $totalSexAttribute -= 1;
         }
-        else if ((mb_substr($patronomyc, -2)) === 'ич') {
+        elseif ((mb_substr($patronomyc, -2)) === 'ич') {
             $totalSexAttribute += 1;
         }
         if ((mb_substr($name, -1)) === 'а') {
             $totalSexAttribute -= 1;
         }
-        else if (((mb_substr($name, -1)) === 'й') || ((mb_substr($name, -1)) === 'н')) {
+        elseif (((mb_substr($name, -1)) === 'й') || ((mb_substr($name, -1)) === 'н')) {
             $totalSexAttribute += 1;
         }
         if ((mb_substr($surname, -2)) === 'ва') {
             $totalSexAttribute -= 1;
         }
-        else if ((mb_substr($surname, -1)) === 'в') {
+        elseif ((mb_substr($surname, -1)) === 'в') {
             $totalSexAttribute += 1;
         }
         $totalSexAttribute = ($totalSexAttribute <=> 0);
@@ -72,10 +72,10 @@
                     if ($temp === 1) {
                         $men += 1;
                     }
-                    else if ($temp === -1) {
+                    elseif ($temp === -1) {
                         $women += 1;
                     }
-                    else if ($temp === 0) {
+                    elseif ($temp === 0) {
                         $indeterminateGender += 1;
                     }
                 }
